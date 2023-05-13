@@ -4,7 +4,7 @@ import IdeaWallSideBar from './components/IdeaWallSideBar';
 import TopBar from '../../components/TopBar';
 import { Network } from 'vis-network';
 import {visNetworkOptions as option} from '../../utils/visNetworkOptions'
-import useSvgConvertUrl from '../../utils/svgConvertUrl';
+import svgConvertUrl from '../../utils/svgConvertUrl';
 
 import { useQuery } from 'react-query';
 import { getIdeaWall, addIdeaWall, updateIdeaWall, deleteIdeaWall } from '../../api/ideaWall';
@@ -12,7 +12,7 @@ import { socket } from '../../utils/socket';
 
 export default function IdeaWall() {
     const container = useRef(null);
-    const url  = useSvgConvertUrl("node");
+    const url  = svgConvertUrl("node");
     const [ nodes, setNodes ] = useState([{ id: 1, image: url, shape: "image", x:0, y:0},
     { id: 2, image: url, shape: "image", x:200, y:200}
     ]);
@@ -81,7 +81,7 @@ export default function IdeaWall() {
     const handleSubmit = (e) =>{
         e.preventDefault()
         setOpenCreateNode(false)
-        const newNodeUrl = useSvgConvertUrl(nodeData.title)
+        const newNodeUrl = svgConvertUrl(nodeData.title)
         setNodes( prev => {
             return [...prev,
             {id: 5, image: newNodeUrl, shape: "image"}
