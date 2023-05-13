@@ -20,6 +20,8 @@
     "react-type-animation": "^3.0.1",
     "socket.io-client": "^4.6.1",
     "uuid": "^9.0.0",
+    "vis-data": "^7.1.6",
+    "vis-network": "^9.1.6",
     "vite-plugin-node-polyfills": "^0.8.1"
   },
   "devDependencies": {

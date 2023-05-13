@@ -5,7 +5,7 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   safelist: [
-    {pattern: /(bg|text)-./}
+    {pattern: /(bg|text|top|left)-./}
   ],
   theme: {
     extend: {

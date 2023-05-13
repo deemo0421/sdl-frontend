@@ -16,7 +16,7 @@ export default function Carditem({ data, index, columnIndex }) {
   const [ tagModalopen, setTagModalOpen ] = useState(false)
   const [ assignMemberModalopen, setAssignMemberModalOpen ] = useState(false)
   const [ cardData, setCardData ] = useState({
-    "id":99,
+    "id":"",
     "title": "",
     "content":"",
     "labels":[],
@@ -79,7 +79,7 @@ export default function Carditem({ data, index, columnIndex }) {
             {
               data.assignees.map((assignee, index) => {
                 return(
-                  <div key={index} className={`w-8 h-8 ${assignee.bgcolor} rounded-full flex items-center text-center p-2 shadow-xl text-xs overflow-hidden cursor-default`}>
+                  <div key={index} className={`w-8 h-8 bg-slate-100 rounded-full flex items-center text-center p-2 shadow-xl text-xs overflow-hidden cursor-default`}>
                     {assignee.userId}
                   </div>
                 )

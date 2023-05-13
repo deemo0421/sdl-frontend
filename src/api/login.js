@@ -1,24 +1,19 @@
 import axios from "axios";
 
+axios.defaults.withCredentials = true; 
 //login & register
-const loginApi = axios.create({
-    baseURL: "http://localhost:3000/login",
+const usersApi = axios.create({
+    baseURL: "http://localhost:3000/users",
     headers:{
         "Content-Type":" application/json"
     },
 })
 
-const registerApi = axios.create({
-    baseURL: "http://localhost:3000/login",
-    headers:{
-        "Content-Type":" application/json"
-    },
-})
-
-export const login = async (userdata) => {
-    const response = await loginApi.post("/", userdata)
+export const userLogin = async (userdata) => {
+    const response = await usersApi.post("/login", userdata)
+    return response;
 }
 
-export const register = async (userdata) => {
-    const response = await registerApi.post("/", userdata)
+export const userRegister = async (userdata) => {
+    const response = await usersApi.post("/register", userdata)
 }

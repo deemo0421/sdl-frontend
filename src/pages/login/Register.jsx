@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
 import { TypeAnimation } from 'react-type-animation';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { userRegister } from '../../api/login';
 
-export default function Login() {
-    const [userData, setUserData] = useState({});
+export default function Login({setUserInfo}) {
+    const [userData, setUserData] = useState({role:"student"});
     const [ error, setError ] = useState("");
+    const navigate = useNavigate();
 
     const handleChange = e =>{
         const { name, value } = e.target
@@ -19,8 +23,27 @@ export default function Login() {
             setError("請確認密碼")
         } else if  (userData.confirmPassword !== value){
             setError("密碼不相符")
+        }else{
+            setError("")
+        };
+    };
+
+    const userRegisterMutation = useMutation(userRegister,{
+        onSuccess: (res) => {
+            console.log(res);
+            navigate("/homepage");
+            setUserInfo(res.data)
+        },
+        onError: (err) => {
+            console.log(err);
+            setError("帳號或密碼錯誤")
         }
-    }
+    });
+
+    const handleSubmit = (e) =>{
+        e.preventDefault()
+        userRegisterMutation.mutate(userData)
+    };
     
     return (
         <section className="flex flex-col md:flex-row h-screen items-center">
@@ -57,7 +80,7 @@ export default function Login() {
                 <form className="mt-6">
                 <div>
                     <label className="block text-gray-700 text-base">帳號</label>
-                    <input type="text" name="account" placeholder="帳號" onChange={handleChange} className=" text-base w-full px-4 py-3 rounded-lg bg-white mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autoFocus required />
+                    <input type="text" name="username" placeholder="帳號" onChange={handleChange} className=" text-base w-full px-4 py-3 rounded-lg bg-white mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autoFocus required />
                 </div>
                 <div>
                     <label className="block text-gray-700 text-base">密碼</label>
@@ -76,14 +99,13 @@ export default function Login() {
                     </select>
                 </div>
                 
-                <button type="submit" className="w-full block bg-violet-500 hover:bg-violet-400 focus:bg-violet-400 text-white font-semibold rounded-lg
-                    px-4 py-3 mt-6 text-base">註冊</button>
+                <button type="submit" onClick={handleSubmit} className="w-full block bg-violet-500 hover:bg-violet-400 focus:bg-violet-400 text-white font-semibold rounded-lg px-4 py-3 mt-6 text-base">註冊</button>
                 </form>
                 <p className="mt-8">
                 Have an account? 
-                <a href="#" className="text-blue-500 hover:text-blue-700 font-semibold">
-                    Login
-                </a>
+                <span className="text-blue-500 hover:text-blue-700 font-semibold">
+                    <Link to="/">Login</Link> 
+                </span>
                 </p>
             </div>
         </div>

@@ -9,7 +9,6 @@ import { StrictModeDroppable as Droppable } from '../../utils/StrictModeDroppabl
 
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { getKanban, addCardItem, updateCardItem, deleteCardItem } from '../../api/kanban'
-
 import { socket } from '../../utils/socket'
 
 export default function Kanban() {
@@ -17,8 +16,7 @@ export default function Kanban() {
   const [newCard, setNewCard] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [selectedcolumn, setSelectedcolumn] = useState(0);
-  const queryClient = useQueryClient();
-
+  // const queryClient = useQueryClient();
   const {
     isLoading,
     isError,

@@ -1,17 +1,39 @@
 import React, { useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { userLogin } from '../../api/login';
 
-export default function Login() {
-  const [userData, setUserData] = useState({})
+export default function Login({setUserInfo}) {
+  const [userData, setUserData] = useState({});
+  const [ error, setError ] = useState("");
+  const navigate = useNavigate();
 
-    const handleChange = (e) =>{
-        const { name, value } = e.target
-        setUserData( prevData => ({
-            ...prevData,
-            [name]:value
-        }));
-    }
+  const handleChange = (e) =>{
+      const { name, value } = e.target
+      setUserData( prevData => ({
+          ...prevData,
+          [name]:value
+      }));
+  }
+
+  const userLoginMutation = useMutation(userLogin, {
+      onSuccess: (res) => {
+        console.log(res);
+        setUserInfo(res.data)
+        navigate("/homepage")
+      },
+      onError: (err) => {
+        console.log(err);
+        setError("帳號或密碼錯誤")
+      }
+  })
+
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+    userLoginMutation.mutate(userData)
+  } 
+
   return (
     <section className="flex flex-col md:flex-row h-screen items-center">
       <div className="hidden bg-violet-700 w-full md:w-1/2 xl:w-2/3 h-screen md:flex md:items-center md:justify-center">
@@ -48,19 +70,19 @@ export default function Login() {
           <form className="mt-6">
             <div>
               <label className="block text-gray-700 text-base">帳號</label>
-              <input type="text" name="account" placeholder="帳號" onChange={handleChange} className=" text-base w-full px-4 py-3 rounded-lg bg-white mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autoFocus required />
+              <input type="text" name="username" placeholder="帳號" onChange={handleChange} className=" text-base w-full px-4 py-3 rounded-lg bg-white mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autoFocus required />
             </div>
             <div className="mt-4">
               <label className="block text-gray-700 text-base">密碼</label>
               <input type="password" name="password" placeholder="密碼" minLength="6" onChange={handleChange} className=" text-base w-full px-4 py-3 rounded-lg bg-white mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" required />
+              {error && <span className=' text-xs text-red-600'>{error}</span>}
             </div>
-            <button type="submit" className="w-full block bg-violet-500 hover:bg-violet-400 focus:bg-violet-400 text-white font-semibold rounded-lg
-                  px-4 py-3 mt-6 text-base">登入</button>
+            <button type="submit" onClick={handleSubmit} className="w-full block bg-violet-500 hover:bg-violet-400 focus:bg-violet-400 text-white font-semibold rounded-lgpx-4 py-3 mt-6 text-base">登入</button>
           </form>
           <p className="mt-8">
             Need an account? 
             <span className="text-blue-500 hover:text-blue-700 font-semibold">
-              <Link to="register">Create an account</Link> 
+              <Link to="/register">Create an account</Link> 
             </span>
           </p>
         </div>
