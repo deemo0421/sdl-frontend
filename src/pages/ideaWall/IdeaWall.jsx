@@ -4,7 +4,7 @@ import IdeaWallSideBar from './components/IdeaWallSideBar';
 import TopBar from '../../components/TopBar';
 import { Network } from 'vis-network';
 import {visNetworkOptions as option} from '../../utils/visNetworkOptions'
-import useSvgConvertUrl from '../../hook/useSvgConvertUrl';
+import useSvgConvertUrl from '../../utils/svgConvertUrl';
 
 import { useQuery } from 'react-query';
 import { getIdeaWall, addIdeaWall, updateIdeaWall, deleteIdeaWall } from '../../api/ideaWall';

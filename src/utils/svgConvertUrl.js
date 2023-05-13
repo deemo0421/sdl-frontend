@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 
-export default function useSvgConvertUrl( title ) {
+export default function svgConvertUrl( title ) {
     const svg = (
         <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
         <rect x="0" y="0" width="100%" height="100%" fill="#FFF9B2" />
