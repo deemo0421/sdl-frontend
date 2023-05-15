@@ -1,21 +1,22 @@
 import axios from "axios";
 
-const kanbanApi = axios.create({
+const projectApi = axios.create({
     baseURL: "http://localhost:3000/project",
     headers:{
-        "Content-Type":" application/json"
+        "Content-Type":" application/json",
+        accessToken: localStorage.getItem("accessToken")
     },
 })
 
 export const getProject = async (projectId) => {
-    const response = await kanbanApi.get(`/${projectId}`)
+    const response = await projectApi.get(`/${projectId}`)
     return response.data
 }
 
 export const addAllProject = async (userId) => {
-    const response = await kanbanApi.post("/", userId)
+    const response = await projectApi.post("/", userId)
 }
 
 export const addProject = async (cardItem) => {
-    const response = await kanbanApi.post("/", cardItem)
+    const response = await projectApi.post("/", cardItem)
 }

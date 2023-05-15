@@ -3,12 +3,12 @@ import Modal from '../../components/Modal';
 import IdeaWallSideBar from './components/IdeaWallSideBar';
 import TopBar from '../../components/TopBar';
 import { Network } from 'vis-network';
-import {visNetworkOptions as option} from '../../utils/visNetworkOptions'
-import svgConvertUrl from '../../utils/svgConvertUrl';
+import {visNetworkOptions as option} from '../../utils/VisNetworkOptions'
+import svgConvertUrl from '../../utils/SvgConvertUrl';
 
 import { useQuery } from 'react-query';
 import { getIdeaWall, addIdeaWall, updateIdeaWall, deleteIdeaWall } from '../../api/ideaWall';
-import { socket } from '../../utils/socket';
+import { socket } from '../../utils/Socket';
 
 export default function IdeaWall() {
     const container = useRef(null);

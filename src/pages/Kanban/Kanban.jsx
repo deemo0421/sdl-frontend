@@ -9,7 +9,7 @@ import { StrictModeDroppable as Droppable } from '../../utils/StrictModeDroppabl
 
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { getKanban, addCardItem, updateCardItem, deleteCardItem } from '../../api/kanban'
-import { socket } from '../../utils/socket'
+import { socket } from '../../utils/Socket'
 
 export default function Kanban() {
   const [kanbanData, setKanbanData] = useState([]);
