@@ -23,6 +23,8 @@ export default function Login() {
       onSuccess: (res) => {
         console.log(res);
         localStorage.setItem("accessToken", res.data.accessToken);
+        localStorage.setItem("username", res.data.username);
+        localStorage.setItem("id", res.data.id);
         setUserContext( prev =>{
           return{ ...prev, 
               username : res.data.username,

@@ -191,4 +191,3 @@ export default function Carditem({ data, index, columnIndex }) {
     </>
   )
 }
-11206

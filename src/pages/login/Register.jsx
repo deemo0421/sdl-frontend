@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { userRegister } from '../../api/login';
 
-export default function Login({setUserInfo}) {
+export default function Login() {
     const [userData, setUserData] = useState({role:"student"});
     const [ error, setError ] = useState("");
     const navigate = useNavigate();

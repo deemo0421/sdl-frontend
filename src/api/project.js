@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const projectApi = axios.create({
-    baseURL: "http://localhost:3000/project",
+    baseURL: "http://localhost:3000/projects",
     headers:{
         "Content-Type":" application/json",
         accessToken: localStorage.getItem("accessToken")
@@ -13,10 +13,11 @@ export const getProject = async (projectId) => {
     return response.data
 }
 
-export const addAllProject = async (userId) => {
-    const response = await projectApi.post("/", userId)
+export const getAllProject = async (config) => {
+    const response = await projectApi.get("/",config)
+    return response.data
 }
 
-export const addProject = async (cardItem) => {
-    const response = await projectApi.post("/", cardItem)
+export const createProject = async (data) => {
+    const response = await projectApi.post("/", data)
 }

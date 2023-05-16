@@ -32,7 +32,7 @@ export default function App() {
           <Route path="homepage" element={<HomePage />} />
           <Route path="bulletin" element={<Bulletin />} />
           <Route path="List" element={<List />} />
-          <Route path="project" element={<ProjectLayout />}>
+          <Route path="project/:id" element={<ProjectLayout />}>
             <Route path="kanban" element={<Kanban />} />
             <Route path="task" element={<Task />} />
             <Route path="managePhase" element={<ManagePhase />} />

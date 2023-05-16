@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { FiPlus } from "react-icons/fi"
-import { v4 as uuidv4 } from 'uuid'
-import Carditem from './components/Carditem'
-import TaskHint from './components/TaskHint'
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { FiPlus } from "react-icons/fi";
+import { v4 as uuidv4 } from 'uuid';
+import Carditem from './components/Carditem';
+import TaskHint from './components/TaskHint';
 
-import { DragDropContext } from 'react-beautiful-dnd'
-import { StrictModeDroppable as Droppable } from '../../utils/StrictModeDroppable'
+import { DragDropContext } from 'react-beautiful-dnd';
+import { StrictModeDroppable as Droppable } from '../../utils/StrictModeDroppable';
 
-import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { getKanban, addCardItem, updateCardItem, deleteCardItem } from '../../api/kanban'
-import { socket } from '../../utils/Socket'
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { getKanban, addCardItem, updateCardItem, deleteCardItem } from '../../api/kanban';
+import { socket } from '../../utils/Socket';
 
 export default function Kanban() {
   const [kanbanData, setKanbanData] = useState([]);
@@ -23,13 +24,6 @@ export default function Kanban() {
     error,
     data: kanbanDatas
   } = useQuery( 'kanbanDatas', getKanban, {onSuccess: setKanbanData});
-
-  useEffect(() => {
-    socket.connect();
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
   
   useEffect(() => {
     function onKanbanUpdateEvent(data) {
@@ -102,9 +96,9 @@ export default function Kanban() {
     <div className='grid grid-cols-4 gap-5 my-5 px-20 pt-16 min-w-[1200px] h-screen'>
       <TaskHint />
     {
-      isLoading ? <p>Loading...</p>
-      :  isError ? <p>{error.message}</p>
-      : kanbanData.map(( column, columnIndex ) =>{
+      isLoading ? <p>Loading...</p> :  
+      isError ? <p>{error.message}</p> : 
+      kanbanData.map(( column, columnIndex ) =>{
           return(
             <div key={column.name}>
               <Droppable droppableId={columnIndex.toString()}>
