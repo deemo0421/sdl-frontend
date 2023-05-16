@@ -1,5 +1,8 @@
-import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Routes } from "react-router-dom";
-import { useState } from "react";
+import React from 'react';
+import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from "react-router-dom";
+import { ProtectedLogin, ProtectedRoute } from "./utils/ProtectedRoute";
+import { AuthProvider } from "./utils/AuthContext";
+
 import HomePage from "./pages/home/HomePage";
 import Login from "./pages/login/Login";
 import Register from "./pages/login/Register";
@@ -16,33 +19,38 @@ import ManageIdeaWall from "./pages/manageIdeaWall/ManageIdeaWall";
 import IdeaWall from "./pages/ideaWall/IdeaWall";
 import NotFound from "./pages/notFound/NotFound";
 
-export default function App() {
-  const [userInfo , setUserInfo] = useState({})
 
+export default function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />} >
-        <Route index element={<Login setUserInfo={setUserInfo}/>} />
-        <Route path="register" element={<Register setUserInfo={setUserInfo}/>} />
-        <Route path="homepage" element={<HomePage />} />
-        <Route path="bulletin" element={<Bulletin />} />
-        <Route path="List" element={<List />} />
-        <Route path="project" element={<ProjectLayout userInfo={userInfo}/>}>
-          <Route path="kanban" element={<Kanban />} />
-          <Route path="task" element={<Task />} />
-          <Route path="managePhase" element={<ManagePhase />} />
-          <Route path="reflection" element={<Reflection />} />
-          <Route path="protfolio" element={<Protfolio />} />
-          <Route path="manageIdeaWall" element={<ManageIdeaWall />} />
-          <Route path="ideaWall" element={<IdeaWall />} />
+        <Route element={<ProtectedLogin />}>
+          <Route index element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="homepage" element={<HomePage />} />
+          <Route path="bulletin" element={<Bulletin />} />
+          <Route path="List" element={<List />} />
+          <Route path="project" element={<ProjectLayout />}>
+            <Route path="kanban" element={<Kanban />} />
+            <Route path="task" element={<Task />} />
+            <Route path="managePhase" element={<ManagePhase />} />
+            <Route path="reflection" element={<Reflection />} />
+            <Route path="protfolio" element={<Protfolio />} />
+            <Route path="manageIdeaWall" element={<ManageIdeaWall />} />
+            <Route path="ideaWall" element={<IdeaWall />} />
+          </Route>
         </Route>
         <Route path="*" element={<NotFound />}></Route>
-      </Route>
+      </Route>  
     )
   )
 
   return ( 
-    <RouterProvider router={router}/>
+    <AuthProvider>
+      <RouterProvider router={router}/>
+    </AuthProvider>
   )
 }
 

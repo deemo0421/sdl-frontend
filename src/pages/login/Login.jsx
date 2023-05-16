@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../utils/AuthContext';
 import { useMutation } from 'react-query';
 import { userLogin } from '../../api/login';
 
-export default function Login({setUserInfo}) {
+export default function Login() {
+  const [userContext, setUserContext] = useContext(AuthContext);
   const [userData, setUserData] = useState({});
   const [ error, setError ] = useState("");
   const navigate = useNavigate();
@@ -20,7 +22,14 @@ export default function Login({setUserInfo}) {
   const userLoginMutation = useMutation(userLogin, {
       onSuccess: (res) => {
         console.log(res);
-        setUserInfo(res.data)
+        localStorage.setItem("accessToken", res.data.accessToken);
+        setUserContext( prev =>{
+          return{ ...prev, 
+              username : res.data.username,
+              id : res.data.id,
+              accessToken : res.data.accessToken,
+          }
+        })
         navigate("/homepage")
       },
       onError: (err) => {
