@@ -24,8 +24,7 @@ export default function HomePage() {
   } = useQuery( "projectDatas", () => getAllProject({  params: { userId: localStorage.getItem("id") } }) , {onSuccess:setProjectData });
   
   const {mutate} = useMutation( createProject, {
-    onSuccess : ( data, variable, context) =>{
-      console.log("success");
+    onSuccess : ( ) =>{
       queryClient.invalidateQueries("projectDatas")
     },
     onError : (error) =>{
@@ -34,7 +33,10 @@ export default function HomePage() {
   })
 
   const handleCreateProject = () =>{
-    console.log("create");
+    setCreateProjectData( prev => ({
+      ...prev,
+      userId:localStorage.getItem("id") 
+  }));
     mutate(createprojectData)
   }
 
@@ -50,7 +52,7 @@ export default function HomePage() {
     <div  className='min-w-full min-h-screen h-screen overflow-hidden overflow-x-scroll'>
       <TopBar />
       <SideBar />
-      <div className='flex flex-col my-5 pl-20 pr-5 sm:px-20 pt-16 w-full h-screen justify-start items-center'>
+      <div className='flex flex-col my-5 pl-20 pr-5 sm:px-20 py-16 w-full h-screen justify-start items-center'>
         <div className=' flex flex-row justify-between items-center w-full sm:w-2/3 mb-5'>
           <div className='flex'>
             <button onClick={()=>setCreateProjectModalOpen(true)} className=" bg-customgreen hover:bg-customgreen/80 text-white font-semibold rounded-2xl p-1 mr-1 sm:px-4 sm:mr-4 sm:py-1 text-base">建立專案</button>
@@ -64,23 +66,25 @@ export default function HomePage() {
           </div>
         </div>
         {/* item */}
-        {
-          isLoading ? <Loader /> : 
-          isError ? <p> {error.message}</p> : 
-          projectData.map(( projectItem, index)=>{
-            return(
-              <div key={index} className=' rounded-lg border-2 w-full sm:w-2/3 h-1/4 mt-3 bg-white'>
-                <div className='flex flex-row  w-full h-full'>
-                  <div className='flex w-1/4 justify-center items-center text-lg'>{projectItem?.name}</div> 
-                  <div className='flex w-1/2 justify-center items-center text-lg'>{projectItem?.describe}</div>
-                  <div className='flex w-1/4 justify-center items-center'>
-                      <BsBoxArrowInRight size={30} className=' cursor-pointer' onClick={() => {navigate(`/project/${projectItem.id}/kanban`)}}/>
-                  </div> 
+        <div className='flex flex-col justify-between items-center w-full h-screen overflow-hidden overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-400/70 scrollbar-track-slate-200 scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>
+          {
+            isLoading ? <Loader /> : 
+            isError ? <p> {error.message}</p> : 
+            projectData.map(( projectItem, index)=>{
+              return(
+                <div key={index} className=' rounded-lg border-2 w-full sm:w-2/3 min-h-[100px] mt-3 bg-white'>
+                  <div className='flex flex-row  w-full h-full'>
+                    <div className='flex w-1/4 justify-center items-center text-lg font-bold'>{projectItem?.name}</div> 
+                    <div className='flex w-1/2 justify-center items-center text-lg font-bold'>{projectItem?.describe}</div>
+                    <div className='flex w-1/4 justify-center items-center'>
+                        <BsBoxArrowInRight size={30} className=' cursor-pointer' onClick={() => {navigate(`/project/${projectItem.id}/kanban`)}}/>
+                    </div> 
+                  </div>
                 </div>
-              </div>
-            )
-          })
-        }
+              )
+            })
+          }
+        </div>
       </div> 
       <Modal open={createProjectModalOpen} onClose={() => setCreateProjectModalOpen(false)} opacity={true} position={"justify-center items-center"}> 
           <button onClick={() => setCreateProjectModalOpen(false)} className=' absolute top-1 right-1 rounded-lg bg-white hover:bg-slate-200'>
