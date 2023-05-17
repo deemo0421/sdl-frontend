@@ -2,14 +2,20 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true; 
 const kanbanApi = axios.create({
-    baseURL: "http://localhost:3000/kanban",
+    baseURL: "http://localhost:3000/kanbans",
     headers:{
         "Content-Type":" application/json"
     },
 })
 
-export const getKanban = async (config) => {
-    const response = await kanbanApi.get("/",config)
+
+export const getKanbanColumns = async (projectId) => {
+    const response = await kanbanApi.get(`/${projectId}`)
+    return response.data
+}
+
+export const getKanbanTasks = async (columnId) => {
+    const response = await kanbanApi.get(`/columns/${columnId}`)
     return response.data
 }
 

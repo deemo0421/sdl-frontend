@@ -9,21 +9,57 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { StrictModeDroppable as Droppable } from '../../utils/StrictModeDroppable';
 
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { getKanban, addCardItem, updateCardItem, deleteCardItem } from '../../api/kanban';
+import { getKanbanColumns, getKanbanTasks, addCardItem } from '../../api/kanban';
 import { socket } from '../../utils/Socket';
 
 export default function Kanban() {
   const [kanbanData, setKanbanData] = useState([]);
+  const [columnData, setColumnData] = useState([]);
   const [newCard, setNewCard] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [selectedcolumn, setSelectedcolumn] = useState(0);
+  const {projectId} = useParams();
+  const queryClient = useQueryClient();
+  // const result = useQueryMultipe(kanbanData);
   // const queryClient = useQueryClient();
   const {
-    isLoading,
-    isError,
-    error,
-    data: kanbanDatas
-  } = useQuery( 'kanbanDatas', getKanban, {onSuccess: setKanbanData});
+    isLoading : kanbansLoading,
+    isError : kanbansIsError,
+    error : KanbansError,
+  } = useQuery( 
+    ['kanbanDatas', projectId], 
+    () => getKanbanColumns(projectId), 
+    {
+      onSuccess: setKanbanData
+    }
+  );
+
+  const {
+    isLoading : columnLoading,
+    isError : columnIsError,
+    error : columnError,
+    data : columnOneData
+  } = useQuery( 
+      ['kanbanDatas', kanbanData[0]?.id], 
+      () => getKanbanTasks(kanbanData[0]?.id), 
+      {
+          onSuccess: () => {
+            setColumnData( prev => ({
+              ...prev, columnOneData
+              }));
+          },
+          enabled: !!kanbanData[0]?.id,
+      }
+  );
+
+  //debug
+  // useEffect(()=>{
+  //   if(kanbanData){
+  //     kanbanData &&
+  //     console.log(kanbanData[0]?.id)
+  //   }
+  // },[kanbanData])
+  
   
   useEffect(() => {
     function onKanbanUpdateEvent(data) {
@@ -96,8 +132,8 @@ export default function Kanban() {
     <div className='grid grid-cols-4 gap-5 my-5 px-20 pt-16 min-w-[1200px] h-screen'>
       <TaskHint />
     {
-      isLoading ? <p>Loading...</p> :  
-      isError ? <p>{error.message}</p> : 
+      kanbansLoading ? <p>Loading...</p> :  
+      kanbansIsError ? <p>{KanbansError.message}</p> : 
       kanbanData.map(( column, columnIndex ) =>{
           return(
             <div key={column.name}>
@@ -144,13 +180,13 @@ export default function Kanban() {
                           </button>
                         )
                       }
-                      {
+                      {/* {
                         column.items.length > 0 && (
                           column.items.map((item, index) => {
                             return <Carditem key={item.id} index={index} data={item} columnIndex={columnIndex}/>
                           })
                         )
-                      }
+                      } */}
                       {provided.placeholder}
                     </div>
                   </div>
