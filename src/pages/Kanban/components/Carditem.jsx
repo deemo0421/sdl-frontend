@@ -25,6 +25,7 @@ export default function Carditem({ data, index, columnIndex }) {
   const menberData = [ {name:'YY'}, {name:'Wuret'}, {name:'Dnd'}];
 
   useEffect(()=>{
+    console.log(data);
     setCardData(data);
   },[data])
   
@@ -47,7 +48,7 @@ export default function Carditem({ data, index, columnIndex }) {
   
   return (
     <>
-    <Draggable index={index} draggableId={data.id.toString()}>
+    <Draggable index={index} draggableId={data?.id.toString()}>
     {(provided, snapshot) => (
       <div 
         ref={provided.innerRef}
@@ -61,30 +62,30 @@ export default function Carditem({ data, index, columnIndex }) {
             setOpen(true);
           }} className='w-5 h-5 cursor-pointer'/>
         </div>  
-        <span className=' text-md my-3 text-base leading-6'>{data.content}</span>
+        <span className=' text-md my-3 text-base leading-6'>{data.content.content}</span>
         
         <div className='flex flex-row justify-between items-center'>
           <div className='flex justify-start'>
-            {
-              data.labels.map((label, index) =>{
+            {/* {
+              data?.labels.map((label, index) =>{
                 return(
                   <div key={index} className={` ${label.bgcolor} p-2 rounded-full ${label.textcolor} text-xs font-bold text-center flex items-center h-[20px]`}>
                     {label.content}
                   </div> 
                 )
               }) 
-            }
+            } */}
           </div>
           <div className=" flex justify-end items-center space-x-1">
-            {
-              data.assignees.map((assignee, index) => {
+            {/* {
+              data?.assignees.map((assignee, index) => {
                 return(
                   <div key={index} className={`w-8 h-8 bg-slate-100 rounded-full flex items-center text-center p-2 shadow-xl text-xs overflow-hidden cursor-default`}>
                     {assignee.userId}
                   </div>
                 )
               })
-            }
+            } */}
           </div>
         </div> 
       </div>
@@ -127,7 +128,7 @@ export default function Carditem({ data, index, columnIndex }) {
           <p className="flex justify-start items-center w-full h-7 m-1 font-bold text-sm sm:text-base text-black/60 ">
             標籤
           </p>
-          {
+          {/* {
             cardData &&
             cardData.labels.map((label, index) =>{
               return(
@@ -136,12 +137,12 @@ export default function Carditem({ data, index, columnIndex }) {
                 </div>
               )
             })
-          }
+          } */}
           <p className="flex justify-start items-center w-full h-7 m-1 font-bold text-sm sm:text-base text-black/60">
             指派成員
           </p>
           <div className='flex flex-row'>
-            {
+            {/* {
               cardData &&
               cardData.assignees.map((assignee, index) => {
                 return(
@@ -150,7 +151,7 @@ export default function Carditem({ data, index, columnIndex }) {
                   </div>
                 )
               })
-            }
+            } */}
           </div>
         </div>
         <div className='flex flex-row items-end w-1/3 ml-4'>

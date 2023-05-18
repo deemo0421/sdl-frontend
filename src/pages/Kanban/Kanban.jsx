@@ -14,18 +14,19 @@ import { socket } from '../../utils/Socket';
 
 export default function Kanban() {
   const [kanbanData, setKanbanData] = useState([]);
-  const [columnData, setColumnData] = useState([]);
+  const [columnData, setColumnData] = useState({kanban:[]}); //final kanban data
   const [newCard, setNewCard] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [selectedcolumn, setSelectedcolumn] = useState(0);
   const {projectId} = useParams();
   const queryClient = useQueryClient();
-  // const result = useQueryMultipe(kanbanData);
-  // const queryClient = useQueryClient();
+  
+
   const {
     isLoading : kanbansLoading,
     isError : kanbansIsError,
     error : KanbansError,
+    data : KanbansData
   } = useQuery( 
     ['kanbanDatas', projectId], 
     () => getKanbanColumns(projectId), 
@@ -33,33 +34,86 @@ export default function Kanban() {
       onSuccess: setKanbanData
     }
   );
-
-  const {
-    isLoading : columnLoading,
-    isError : columnIsError,
-    error : columnError,
-    data : columnOneData
-  } = useQuery( 
-      ['kanbanDatas', kanbanData[0]?.id], 
-      () => getKanbanTasks(kanbanData[0]?.id), 
-      {
-          onSuccess: () => {
-            setColumnData( prev => ({
-              ...prev, columnOneData
-              }));
-          },
-          enabled: !!kanbanData[0]?.id,
-      }
-  );
-
-  //debug
-  // useEffect(()=>{
-  //   if(kanbanData){
-  //     kanbanData &&
-  //     console.log(kanbanData[0]?.id)
-  //   }
-  // },[kanbanData])
   
+  //to do multiple usequery or custom hook
+  //frist column query
+  // const {
+  //   isLoading : columnLoading1,
+  //   isError : columnIsError1,
+  //   error : columnError1,
+  //   data : columnData1
+  // } = useQuery( 
+  //     ['kanbanDatas', kanbanData?.kanban[0]?.id], 
+  //     () => getKanbanTasks(kanbanData?.kanban[0]?.id), 
+  //     {
+  //         onSuccess: () => {
+
+  //           if(columnData1 !== undefined){
+  //             const temp = [...kanbanData.kanban];
+  //             setKanbanTask(temp, kanbanData?.kanban[0]?.id, columnData1)
+  //           }
+  //         },
+  //         enabled: !!kanbanData?.kanban[0]?.id,
+  //     }
+  // );
+  // second column query
+  // const {
+  //   isLoading : columnLoading2,
+  //   isError : columnIsError2,
+  //   error : columnError2,
+  //   data : columnData2
+  // } = useQuery( 
+  //     ['kanbanDatas', kanbanData?.kanban[1]?.id], 
+  //     () => getKanbanTasks(kanbanData?.kanban[1]?.id), 
+  //     {
+  //         onSuccess: () => {
+  //           if(columnData2 !== undefined && columnData.kanban){
+  //             const temp = [...columnData.kanban];
+  //             console.log(temp);
+  //             setKanbanTask(temp, kanbanData?.kanban[1]?.id, columnData2)
+  //           }
+  //         },
+  //         enabled: !!kanbanData?.kanban[1]?.id,
+  //     }
+  // );
+
+  //Third column query
+  // const {
+  //   isLoading : columnLoading3,
+  //   isError : columnIsError3,
+  //   error : columnError3,
+  //   data : columnData3
+  // } = useQuery( 
+  //     ['kanbanDatas', kanbanData?.kanban[2]?.id], 
+  //     () => getKanbanTasks(kanbanData?.kanban[2]?.id), 
+  //     {
+  //         onSuccess: () => {
+  //           if(columnData3 !== undefined && columnData.kanban){
+  //             const temp = [...columnData.kanban];
+  //             setKanbanTask(temp, kanbanData?.kanban[2]?.id, columnData3)
+  //           }
+  //         },
+  //         enabled: !!kanbanData?.kanban[2]?.id,
+  //     }
+  // );
+
+  // set column query into useState [columnData, setColumnData]
+  // to do move to utils
+  // const setKanbanTask = (temp, itemId, data ) =>{
+  //   let index = temp.findIndex( item => item.id === itemId);
+  //   console.log(index);
+
+  //   if( index !== -1){
+  //     temp[index] = {
+  //       ...temp[index],
+  //       task : data
+  //     }
+  //   }
+  //   console.log(temp);
+  //   setColumnData({...columnData,kanban:temp})
+  //   // setKanbanData({ ...kanbanData, kanban: temp })
+  //   // maybe conflict with useQuery ['kanbanDatas', projectId]
+  // }
   
   useEffect(() => {
     function onKanbanUpdateEvent(data) {
@@ -132,9 +186,10 @@ export default function Kanban() {
     <div className='grid grid-cols-4 gap-5 my-5 px-20 pt-16 min-w-[1200px] h-screen'>
       <TaskHint />
     {
-      kanbansLoading ? <p>Loading...</p> :  
-      kanbansIsError ? <p>{KanbansError.message}</p> : 
+      (kanbansLoading ) ? <p>Loading...</p> :  
+      kanbansIsError ? <p>{kanbansIsError.message}</p> : 
       kanbanData.map(( column, columnIndex ) =>{
+        console.log(column.task);
           return(
             <div key={column.name}>
               <Droppable droppableId={columnIndex.toString()}>
@@ -180,13 +235,12 @@ export default function Kanban() {
                           </button>
                         )
                       }
-                      {/* {
-                        column.items.length > 0 && (
-                          column.items.map((item, index) => {
+                      {
+                        column.task.length > 0  && 
+                          column.task.map((item, index) => {
                             return <Carditem key={item.id} index={index} data={item} columnIndex={columnIndex}/>
                           })
-                        )
-                      } */}
+                      }
                       {provided.placeholder}
                     </div>
                   </div>
