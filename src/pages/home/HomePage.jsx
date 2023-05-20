@@ -24,7 +24,8 @@ export default function HomePage() {
   } = useQuery( "projectDatas", () => getAllProject({  params: { userId: localStorage.getItem("id") } }) , {onSuccess:setProjectData });
   
   const {mutate} = useMutation( createProject, {
-    onSuccess : ( ) =>{
+    onSuccess : ( res ) =>{
+      console.log(res);
       queryClient.invalidateQueries("projectDatas")
     },
     onError : (error) =>{
@@ -33,10 +34,6 @@ export default function HomePage() {
   })
 
   const handleCreateProject = () =>{
-    setCreateProjectData( prev => ({
-      ...prev,
-      userId:localStorage.getItem("id") 
-  }));
     mutate(createprojectData)
   }
 
@@ -44,7 +41,8 @@ export default function HomePage() {
     const { name, value } = e.target
     setCreateProjectData( prev => ({
         ...prev,
-        [name]:value
+        [name]:value,
+        userId:localStorage.getItem("id") 
     }));
   }
 
@@ -66,7 +64,7 @@ export default function HomePage() {
           </div>
         </div>
         {/* item */}
-        <div className='flex flex-col justify-between items-center w-full h-screen overflow-hidden overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-400/70 scrollbar-track-slate-200 scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>
+        <div className='flex flex-col items-center w-full h-screen overflow-hidden overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-400/70 scrollbar-track-slate-200 scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>
           {
             isLoading ? <Loader /> : 
             isError ? <p> {error.message}</p> : 
@@ -84,6 +82,9 @@ export default function HomePage() {
               )
             })
           }
+            <div className='flex justify-center items-center rounded-lg border-[5px] w-full sm:w-2/3 min-h-[100px] mt-3 bg-white text-slate-400 text-xl font-bold'>
+                建立新專案
+            </div>
         </div>
       </div> 
       <Modal open={createProjectModalOpen} onClose={() => setCreateProjectModalOpen(false)} opacity={true} position={"justify-center items-center"}> 

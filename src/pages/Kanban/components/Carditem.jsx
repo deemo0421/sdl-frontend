@@ -11,7 +11,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import { socket } from '../../../utils/Socket';
 
 
-export default function Carditem({ data, index, columnIndex }) {
+export default function Carditem({ data, index, columnIndex, kanbanData }) {
   const [ open, setOpen ] = useState(false)
   const [ tagModalopen, setTagModalOpen ] = useState(false)
   const [ assignMemberModalopen, setAssignMemberModalOpen ] = useState(false)
@@ -25,7 +25,6 @@ export default function Carditem({ data, index, columnIndex }) {
   const menberData = [ {name:'YY'}, {name:'Wuret'}, {name:'Dnd'}];
 
   useEffect(()=>{
-    console.log(data);
     setCardData(data);
   },[data])
   
@@ -54,7 +53,7 @@ export default function Carditem({ data, index, columnIndex }) {
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
-        className={`${snapshot.isDragging ? 'border-2 border-black/50 bg-cyan-100' : 'border-0 bg-white'}  rounded-md p-3 mt-3 truncate max-w-full`}
+        className={`${snapshot.isDragging ? 'border-2 border-black/50 bg-cyan-100' : 'border-0 bg-white'}  rounded-md p-3 mt-3 truncate min-h-[80px] max-w-full`}
       >
         <div className='flex justify-between'>
           <span className='flex text-lg'>{data.title}</span>
@@ -62,11 +61,12 @@ export default function Carditem({ data, index, columnIndex }) {
             setOpen(true);
           }} className='w-5 h-5 cursor-pointer'/>
         </div>  
-        <span className=' text-md my-3 text-base leading-6'>{data.content.content}</span>
+        <span className=' text-md my-3 text-base leading-6'>{data.content}</span>
         
         <div className='flex flex-row justify-between items-center'>
           <div className='flex justify-start'>
-            {/* {
+            {
+              data.labels &&
               data?.labels.map((label, index) =>{
                 return(
                   <div key={index} className={` ${label.bgcolor} p-2 rounded-full ${label.textcolor} text-xs font-bold text-center flex items-center h-[20px]`}>
@@ -74,10 +74,11 @@ export default function Carditem({ data, index, columnIndex }) {
                   </div> 
                 )
               }) 
-            } */}
+            }
           </div>
           <div className=" flex justify-end items-center space-x-1">
-            {/* {
+            {
+              data.assignees &&
               data?.assignees.map((assignee, index) => {
                 return(
                   <div key={index} className={`w-8 h-8 bg-slate-100 rounded-full flex items-center text-center p-2 shadow-xl text-xs overflow-hidden cursor-default`}>
@@ -85,7 +86,7 @@ export default function Carditem({ data, index, columnIndex }) {
                   </div>
                 )
               })
-            } */}
+            }
           </div>
         </div> 
       </div>
@@ -128,8 +129,8 @@ export default function Carditem({ data, index, columnIndex }) {
           <p className="flex justify-start items-center w-full h-7 m-1 font-bold text-sm sm:text-base text-black/60 ">
             標籤
           </p>
-          {/* {
-            cardData &&
+          {
+            cardData.labels &&
             cardData.labels.map((label, index) =>{
               return(
                 <div key={index} className={` ${label.bgcolor} p-2 rounded-full ${label.textcolor} text-xs font-bold text-center flex items-center w-fit h-6`}>
@@ -137,13 +138,13 @@ export default function Carditem({ data, index, columnIndex }) {
                 </div>
               )
             })
-          } */}
+          }
           <p className="flex justify-start items-center w-full h-7 m-1 font-bold text-sm sm:text-base text-black/60">
             指派成員
           </p>
           <div className='flex flex-row'>
-            {/* {
-              cardData &&
+            {
+              cardData.assignees &&
               cardData.assignees.map((assignee, index) => {
                 return(
                   <div key={index} className={`w-8 h-8 ${assignee.bgcolor} rounded-full flex items-center text-center p-2 shadow-xl text-xs overflow-hidden cursor-default`}>
@@ -151,7 +152,7 @@ export default function Carditem({ data, index, columnIndex }) {
                   </div>
                 )
               })
-            } */}
+            }
           </div>
         </div>
         <div className='flex flex-row items-end w-1/3 ml-4'>

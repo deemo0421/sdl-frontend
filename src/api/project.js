@@ -20,4 +20,5 @@ export const getAllProject = async (config) => {
 
 export const createProject = async (data) => {
     const response = await projectApi.post("/", data)
+    return response.data
 }

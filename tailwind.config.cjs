@@ -10,7 +10,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'press-start': ['"Press Start 2P"', 'cursive'],
+        'press-start': ['Press Start 2P', 'cursive'],
+        'Mulish': ['Mulish', 'sans-serif'],
       },
       colors:{
         'customgreen':'#00C8BB',

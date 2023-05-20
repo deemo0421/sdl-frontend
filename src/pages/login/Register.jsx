@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { userRegister } from '../../api/login';
+import { AuthContext } from '../../utils/AuthContext';
 
 export default function Login() {
     const [userData, setUserData] = useState({role:"student"});
+    const [userContext, setUserContext] = useContext(AuthContext);
     const [ error, setError ] = useState("");
     const navigate = useNavigate();
 
@@ -31,8 +33,17 @@ export default function Login() {
     const userRegisterMutation = useMutation(userRegister,{
         onSuccess: (res) => {
             console.log(res);
+            localStorage.setItem("accessToken", res.data.accessToken);
+            localStorage.setItem("username", res.data.username);
+            localStorage.setItem("id", res.data.id);
             navigate("/homepage");
-            setUserInfo(res.data)
+            setUserContext( prev =>{
+            return{ ...prev, 
+                username : res.data.username,
+                id : res.data.id,
+                accessToken : res.data.accessToken,
+            }
+        })
         },
         onError: (err) => {
             console.log(err);

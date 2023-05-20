@@ -16,4 +16,5 @@ export const userLogin = async (userdata) => {
 
 export const userRegister = async (userdata) => {
     const response = await usersApi.post("/register", userdata)
+    return response;
 }

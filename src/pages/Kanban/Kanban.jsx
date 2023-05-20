@@ -14,7 +14,6 @@ import { socket } from '../../utils/Socket';
 
 export default function Kanban() {
   const [kanbanData, setKanbanData] = useState([]);
-  const [columnData, setColumnData] = useState({kanban:[]}); //final kanban data
   const [newCard, setNewCard] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [selectedcolumn, setSelectedcolumn] = useState(0);
@@ -26,7 +25,7 @@ export default function Kanban() {
     isLoading : kanbansLoading,
     isError : kanbansIsError,
     error : KanbansError,
-    data : KanbansData
+    data : KanbansData,
   } = useQuery( 
     ['kanbanDatas', projectId], 
     () => getKanbanColumns(projectId), 
@@ -116,16 +115,28 @@ export default function Kanban() {
   // }
   
   useEffect(() => {
-    function onKanbanUpdateEvent(data) {
-      setKanbanData(data);
+    function KanbanUpdateEvent(data) {
+      if(data){
+        console.log(data);
+        queryClient.invalidateQueries(['kanbanDatas', projectId]);
+      }
     }
-		socket.on("cardItems", onKanbanUpdateEvent);
-    socket.on("cardItem", onKanbanUpdateEvent);
-    
+    function kanbanDragEvent(data) {
+      if(data){
+        console.log(data);
+        setKanbanData(data)
+      }
+    }
 
+		socket.on("taskItems", KanbanUpdateEvent);
+    socket.on("taskItem", KanbanUpdateEvent);
+    socket.on("dragtaskItem", kanbanDragEvent);
+    
     return () => {
-      socket.off('cardItems', onKanbanUpdateEvent);
-      socket.off('cardItem', onKanbanUpdateEvent);
+      // cardItems include create, drag task
+      socket.off('taskItems', KanbanUpdateEvent);
+      socket.off('taskItem', KanbanUpdateEvent);
+      // socket.off('taskItem', KanbanUpdateEvent);
     };
 	}, [socket]);
 
@@ -153,6 +164,7 @@ export default function Kanban() {
     socket.emit('cardItemDragged', {
       destination,
       source,
+      kanbanData
     })
   }
 
@@ -167,14 +179,16 @@ export default function Kanban() {
     }
     else {
       const item = {
-        id: uuidv4(),
-        title: newCard,
+        title: "",
+        content: newCard,
+        labels: [],
         assignees: []
       }
       // addKanbanMutation.mutate({item})
-      socket.emit("cardItemCreated", {
+      socket.emit("taskItemCreated", {
         selectedcolumn,
         item,
+        kanbanData
       });
       setShowForm(false);
       setNewCard("");
@@ -189,7 +203,6 @@ export default function Kanban() {
       (kanbansLoading ) ? <p>Loading...</p> :  
       kanbansIsError ? <p>{kanbansIsError.message}</p> : 
       kanbanData.map(( column, columnIndex ) =>{
-        console.log(column.task);
           return(
             <div key={column.name}>
               <Droppable droppableId={columnIndex.toString()}>
@@ -198,7 +211,7 @@ export default function Kanban() {
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                   >  
-                    <div className= {`${snapshot.isDraggingOver ? ' bg-rose-100/70' : 'bg-gray-100'} p-3 rounded-md shadow-md flex flex-col overflow-y-scroll w-full max-h-[80vh]`}>
+                    <div className= {`${snapshot.isDraggingOver ? ' bg-rose-100/70' : 'bg-gray-100'} p-3 rounded-md shadow-md flex flex-col  w-full max-h-[80vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-400/70 scrollbar-track-slate-200 scrollbar-thumb-rounded-full scrollbar-track-rounded-full`}>
                       <h4 className=' flex justify-between items-center mb-2'>
                         <span className=' text-xl text-gray-600'>{ column.name }</span>
                       </h4>
@@ -238,7 +251,13 @@ export default function Kanban() {
                       {
                         column.task.length > 0  && 
                           column.task.map((item, index) => {
-                            return <Carditem key={item.id} index={index} data={item} columnIndex={columnIndex}/>
+                            return <Carditem 
+                                    key={item.id} 
+                                    index={index} 
+                                    data={item} 
+                                    columnIndex={columnIndex} 
+                                    kanbanData={kanbanData}
+                                    />
                           })
                       }
                       {provided.placeholder}
