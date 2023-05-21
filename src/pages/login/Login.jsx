@@ -3,7 +3,7 @@ import { TypeAnimation } from 'react-type-animation';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../utils/AuthContext';
 import { useMutation } from 'react-query';
-import { userLogin } from '../../api/login';
+import { userLogin } from '../../api/users';
 
 export default function Login() {
   const [userContext, setUserContext] = useContext(AuthContext);

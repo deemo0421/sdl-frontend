@@ -8,10 +8,10 @@ const projectApi = axios.create({
     },
 })
 
-// export const getProject = async (projectId) => {
-//     const response = await projectApi.get(`/${projectId}`)
-//     return response.data
-// }
+export const getProject = async (projectId) => {
+    const response = await projectApi.get(`/${projectId}`)
+    return response.data
+}
 
 export const getAllProject = async (config) => {
     const response = await projectApi.get("/",config)

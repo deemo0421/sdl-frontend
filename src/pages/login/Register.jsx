@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { userRegister } from '../../api/login';
+import { userRegister } from '../../api/users';
 import { AuthContext } from '../../utils/AuthContext';
 
 export default function Login() {

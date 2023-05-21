@@ -25,7 +25,10 @@ export default function HomePage() {
     isError,
     error,
     data
-  } = useQuery( "projectDatas", () => getAllProject({  params: { userId: localStorage.getItem("id") } }) , {onSuccess:setProjectData });
+  } = useQuery( "projectDatas", () => getAllProject(
+    {  params: { userId: localStorage.getItem("id") } }), 
+    {onSuccess:setProjectData }
+  );
   
   const {mutate} = useMutation( createProject, {
     onSuccess : ( res ) =>{
@@ -100,7 +103,7 @@ export default function HomePage() {
         <div className='flex flex-col items-center w-full h-screen overflow-hidden overflow-y-scroll scrollbar-thin scrollbar-thumb-slate-400/70 scrollbar-track-slate-200 scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>
           {
             isLoading ? <Loader /> : 
-            isError ? <p> {error.message}</p> : 
+            isError ? <p className=' font-bold text-2xl'> {error.message}</p> : 
             projectData.map(( projectItem, index)=>{
               return(
                 <div key={index} className=' rounded-lg border-2 w-full sm:w-2/3 min-h-[100px] mt-3 bg-white'>

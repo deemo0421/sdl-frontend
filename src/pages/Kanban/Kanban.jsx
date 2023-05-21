@@ -4,6 +4,7 @@ import { FiPlus } from "react-icons/fi";
 import { v4 as uuidv4 } from 'uuid';
 import Carditem from './components/Carditem';
 import TaskHint from './components/TaskHint';
+import Loader from '../../components/Loader';
 
 import { DragDropContext } from 'react-beautiful-dnd';
 import { StrictModeDroppable as Droppable } from '../../utils/StrictModeDroppable';
@@ -22,7 +23,7 @@ export default function Kanban() {
   
 
   const {
-    isLoading : kanbansLoading,
+    isLoading : kanbanIsLoading,
     isError : kanbansIsError,
     error : KanbansError,
     data : KanbansData,
@@ -200,8 +201,8 @@ export default function Kanban() {
     <div className='grid grid-cols-4 gap-5 my-5 px-20 pt-16 min-w-[1200px] h-screen'>
       <TaskHint />
     {
-      (kanbansLoading ) ? <p>Loading...</p> :  
-      kanbansIsError ? <p>{kanbansIsError.message}</p> : 
+      kanbanIsLoading  ? <Loader /> :  
+      kanbansIsError ? <p className=' font-bold text-2xl'>{kanbansIsError.message}</p> : 
       kanbanData.map(( column, columnIndex ) =>{
           return(
             <div key={column.name}>
