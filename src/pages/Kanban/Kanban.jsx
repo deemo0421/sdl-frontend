@@ -128,15 +128,15 @@ export default function Kanban() {
         setKanbanData(data)
       }
     }
-
+    socket.connect(); 
 		socket.on("taskItems", KanbanUpdateEvent);
     socket.on("taskItem", KanbanUpdateEvent);
     socket.on("dragtaskItem", kanbanDragEvent);
     
     return () => {
-      // cardItems include create, drag task
       socket.off('taskItems', KanbanUpdateEvent);
       socket.off('taskItem', KanbanUpdateEvent);
+      socket.disconnect();
       // socket.off('taskItem', KanbanUpdateEvent);
     };
 	}, [socket]);

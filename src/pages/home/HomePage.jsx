@@ -181,7 +181,7 @@ export default function HomePage() {
                     name='referral_Code'
                     onChange={handleChangeReferral_Code}
                     required
-                    />
+                  />
             </div>
             <div className='flex justify-end m-2'>
                 <button onClick={()=>{

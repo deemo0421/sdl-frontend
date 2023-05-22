@@ -4,7 +4,7 @@ import { BsChevronDown, BsPlusCircleDotted } from "react-icons/bs";
 import { getProjectUser } from '../api/users';
 import { getProject } from '../api/project';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { GrFormClose } from "react-icons/gr";
 import Modal from './Modal';
 
@@ -39,9 +39,9 @@ export default function TopBar() {
 
   return (
     <div className='fixed  h-16 w-full pl-20 bg-[#FFFFFF] flex items-center justify-between pr-5 border-b-2'>
-        <div className="flex px-5 items-center font-bold font-Mulish text-2xl">
-        sdls
-        </div>
+        <Link to="/homepage" className="flex px-5 items-center font-bold font-Mulish text-2xl">
+          sdls
+        </Link>
         <div className="flex items-center">
         <ul className="flex items-center justify-center space-x-1">
           {

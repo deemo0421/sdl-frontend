@@ -2,25 +2,23 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true; 
 const ideaWallApi = axios.create({
-    baseURL: "http://localhost:3000/project/ideaWall",
+    baseURL: "http://localhost:3000/ideaWall",
     headers:{
         "Content-Type":" application/json"
     },
 })
 
-export const getIdeaWall = async () => {
-    const response = await ideaWallApi.get("/")
+export const getIdeaWall = async (projectId,ideaWallname) => {
+    const response = await ideaWallApi.get(`/${projectId}/${ideaWallname}`)
     return response.data
 }
 
-export const addIdeaWall = async (data) => {
+export const getAllIdeaWall = async (config) => {
+    const response = await ideaWallApi.get("/", config)
+    return response.data
+}
+
+export const createIdeaWall = async (data) => {
     const response = await ideaWallApi.post("/", data)
-}
-
-export const updateIdeaWall = async () => {
-    const response = await ideaWallApi.post("/", cardItem)
-}
-
-export const deleteIdeaWall = async (cardItem) => {
-    const response = await ideaWallApi.post("/", cardItem)
+    return response.data
 }

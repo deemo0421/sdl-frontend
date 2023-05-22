@@ -6,8 +6,8 @@ export default function svgConvertUrl( title ) {
         <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
         <rect x="0" y="0" width="100%" height="100%" fill="#FFF9B2" />
             <foreignObject x="0" y="0" width="100%" height="100%">
-                <div xmlns="http://www.w3.org/1999/xhtml" style={{ width:"100%", height:"100%", fontSize:"40px", display:"flex", justifyContent:"center", alignItems:"center"}}> 
-                <span style={{ color:"black"}}>
+                <div xmlns="http://www.w3.org/1999/xhtml" style={{ width:"100%", height:"100%", display:"flex", justifyContent:"center", alignItems:"center"}}> 
+                <span style={{ color:"black", fontSize:"50px", fontWeight:"700"}}>
                     {title}
                 </span>
                 </div>
