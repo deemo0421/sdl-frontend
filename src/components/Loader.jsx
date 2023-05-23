@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Loader() {
     return (
-        <div className="flex h-screen w-screen items-center justify-center">
+        <div className="flex h-screen w-screen items-start justify-center">
             <button type="button" className="flex items-center rounded-lg  px-4 py-2 text-white" disabled>
                 <svg className="mr-3 h-10 w-10 animate-spin text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
