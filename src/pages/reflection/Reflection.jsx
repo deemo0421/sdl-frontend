@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { getAllPersonalDaily, createPersonalDaily, getAllTeamDaily, createTeamDaily } from '../../api/reflection';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import toast, { Toaster } from 'react-hot-toast';
+import Loader from '../../components/Loader';
 
 export default function Reflection() {
     const { projectId } = useParams();
@@ -128,7 +129,7 @@ export default function Reflection() {
                 <hr className='w-full h-[5px] my-2 rounded-xl bg-gray-200 border-0 dark:bg-gray-700'/>
                 <div className=' flex flex-wrap justify-start items-center w-full mb-5'>
                     {
-                        isLoading ? <p className=' text-base font-bold'>Loading...</p>:
+                        isLoading ? <Loader />:
                         isError ? <p className=' text-base font-bold'>{error.message}</p>:
                         personalDaily.map( ( item, index ) => {
                             console.log(item);
@@ -154,7 +155,7 @@ export default function Reflection() {
                 <hr className='w-full h-[5px] my-2 rounded-xl bg-gray-200 border-0 dark:bg-gray-700'/>
                 <div className='  flex flex-wrap justify-start items-center w-full mb-5'>
                     {
-                        teamDailyQuery.isLoading ? <p className=' text-base font-bold'>Loading...</p>:
+                        teamDailyQuery.isLoading ? <Loader />:
                         teamDailyQuery.isError ? <p className=' text-base font-bold'>{error.message}</p>:
                         teamDaily.map( ( item, index ) => {
                             if(item.type === "discuss"){
@@ -187,7 +188,7 @@ export default function Reflection() {
                 <hr className='w-full h-[5px] my-2 rounded-xl bg-gray-200 border-0 dark:bg-gray-700'/>
                 <div className=' flex flex-wrap justify-start items-center w-full mb-5'>
                     {
-                        teamDailyQuery.isLoading ? <p className=' text-base font-bold'>Loading...</p>:
+                        teamDailyQuery.isLoading ? <Loader />:
                         teamDailyQuery.isError ? <p className=' text-base font-bold'>{error.message}</p>:
                         teamDaily.map( ( item, index ) => {
                             if(item.type === "experiment"){

@@ -14,7 +14,7 @@ import List from "./pages/list/List";
 import Task from "./pages/task/Task";
 import ManagePhase from "./pages/managePhase/ManagePhase";
 import Reflection from "./pages/reflection/Reflection";
-import Protfolio from "./pages/protfolio/protfolio";
+import Protfolio from './pages/protfolio/Protfolio';
 import ManageIdeaWall from "./pages/manageIdeaWall/ManageIdeaWall";
 import IdeaWall from "./pages/ideaWall/IdeaWall";
 import NotFound from "./pages/notFound/NotFound";

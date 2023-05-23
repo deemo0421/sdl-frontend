@@ -8,8 +8,8 @@ const ideaWallApi = axios.create({
     },
 })
 
-export const getIdeaWall = async (projectId,ideaWallname) => {
-    const response = await ideaWallApi.get(`/${projectId}/${ideaWallname}`)
+export const getIdeaWall = async (projectId,stage) => {
+    const response = await ideaWallApi.get(`/${projectId}/${stage}`)
     return response.data
 }
 

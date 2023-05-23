@@ -23,32 +23,42 @@ export default function IdeaWall() {
     const [ createNodeModalOpen, setCreateNodeModalOpen ] = useState(false);
     const [ updateNodeModalOpen, setUpdateNodeModalOpen ] = useState(false);
     const [ canvasPosition, setCanvasPosition ] = useState({});
-    const [ ideaWallInfo, setIdealWallInfo] = useState({id:"",name:"",type:""})
+    const [ ideaWallInfo, setIdealWallInfo] = useState({id:"1",name:"",type:""})
     const [ selectNodeInfo, setSelectNodeInfo] = useState({id:"",title:"",content:"",owner:"", ideaWallId:""});
     const [ buildOnNodeId, setBuildOnId ] = useState("")
+    const [ tempid, setTempId] = useState("")
 
 
     const ideaWallInfoQuery = useQuery( 
         'ideaWallInfo', 
-        () => getIdeaWall(projectId,"1-1ideaWall"),
+        () => getIdeaWall(projectId, localStorage.getItem("mainstage")),
         {
-            onSuccess:setIdealWallInfo,
+            onSuccess:(data)=>{
+                
+                setIdealWallInfo(data)
+                if(data){
+                    const {id} = data
+                    setTempId(id)
+                }
+            },
         }
     )
     const getNodesQuery = useQuery({
-        queryKey: ['ideaWallDatas', ideaWallInfo.id],
-        queryFn: () => getNodes(ideaWallInfo.id),
+        queryKey: ['ideaWallDatas', tempid],
+        queryFn: () => getNodes(tempid),
         // The query will not execute until the userId exists
         onSuccess:setnodes,
-        enabled: !!ideaWallInfo.id
+        enabled: !!tempid,
+        retryOnMount:false
     });
 
     const getNodeRelationQuery = useQuery({
-        queryKey: ['ideaWallEdgesDatas', ideaWallInfo.id],
-        queryFn: () => getNodeRelation(ideaWallInfo.id),
+        queryKey: ['ideaWallEdgesDatas', tempid],
+        queryFn: () => getNodeRelation(tempid),
         // The query will not execute until the userId exists
         onSuccess:setEdges,
-        enabled: !!ideaWallInfo.id
+        enabled: !!tempid,
+        retryOnMount:false
     });
 
     // convert node to svg
