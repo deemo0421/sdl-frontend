@@ -4,7 +4,6 @@ const projectApi = axios.create({
     baseURL: "http://localhost:3000/projects",
     headers:{
         "Content-Type":" application/json",
-        accessToken: localStorage.getItem("accessToken")
     },
 })
 

@@ -8,6 +8,13 @@ const kanbanApi = axios.create({
     },
 })
 
+const stageApi = axios.create({
+    baseURL: "http://localhost:3000/stage",
+    headers:{
+        "Content-Type":" application/json"
+    },
+})
+
 
 export const getKanbanColumns = async (projectId) => {
     const response = await kanbanApi.get(`/${projectId}`)
@@ -29,4 +36,9 @@ export const updateCardItem = async (cardItem) => {
 
 export const deleteCardItem = async (config) => {
     const response = await kanbanApi.delete("/",config)
+}
+
+export const getStageInfo = async (subStage) => {
+    const response = await stageApi.get(`/${subStage}`)
+    return response.data
 }

@@ -23,7 +23,10 @@ export default function TopBar() {
 
   const getProjectQuery = useQuery( "getProject", () => getProject(projectId), 
     {
-      onSuccess: setProjectInfo,
+      onSuccess: (data)=>{
+        setProjectInfo(data);
+        localStorage.setItem('mainstage', data.mainStage)
+      },
       enabled:false
     }
   );
