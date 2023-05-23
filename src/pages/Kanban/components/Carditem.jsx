@@ -22,7 +22,7 @@ export default function Carditem({ data, index, columnIndex, kanbanData }) {
     "labels":[],
     "assignees": []
   })
-  const menberData = [ {name:'YY'}, {name:'Wuret'}, {name:'Dnd'}];
+  const menberData = [ {name:'成員1'}, {name:'成員2'}, {name:'成員3'}];
 
   useEffect(()=>{
     setCardData(data);

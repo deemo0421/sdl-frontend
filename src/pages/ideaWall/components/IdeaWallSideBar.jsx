@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 import {FaBars} from 'react-icons/fa'
-import { AiOutlineImport, AiFillEye } from "react-icons/ai"
+import { AiOutlineImport, AiFillEye, AiOutlineRollback } from "react-icons/ai"
 import { GrStackOverflow } from "react-icons/gr"
+import { Link } from 'react-router-dom'
 
 export default function IdeaWallSideBar() {
     const [open, setOpen] = useState(false);
@@ -16,20 +17,23 @@ export default function IdeaWallSideBar() {
                 <FaBars size={26} className='cursor-pointer' onClick={()=>setOpen(!open)}/>
             </div>
             <div className='mt-4 flex flex-col gap-4 relative'>
-            {
-                menus?.map((menu, i) => (
-                <div key={i} className={`${menu?.margin && "mt-5"} group flex items-center text-sm gap-3.5 font-medium p-3 hover:bg-slate-100 rounded-sm cursor-pointer`}>
-                    <div>{React.createElement(menu?.icon, { size: "26" })}</div>
-                    <h2 style={{transitionDelay: `${i + 1}00ms`,}} className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"}`}>
-                    {menu?.name}
-                    </h2>
-                    <h2 className= {`${ open && 'hidden'} absolute left-14 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg p-0 w-0  overflow-hidden group-hover:p-1  group-hover:w-fit`}>
-                    {menu?.name}
-                    </h2>
-                </div>
-                ))
-            }
-            </div>    
+                {
+                    menus?.map((menu, i) => (
+                    <div key={i} className={`${menu?.margin && "mt-5"} group flex items-center text-sm gap-3.5 font-medium p-3 hover:bg-slate-100 rounded-sm cursor-pointer`}>
+                        <div>{React.createElement(menu?.icon, { size: "26" })}</div>
+                        <h2 style={{transitionDelay: `${i + 1}00ms`,}} className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"}`}>
+                        {menu?.name}
+                        </h2>
+                        <h2 className= {`${ open && 'hidden'} absolute left-14 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg p-0 w-0  overflow-hidden group-hover:p-1  group-hover:w-fit`}>
+                        {menu?.name}
+                        </h2>
+                    </div>
+                    ))
+                }
+            </div> 
+            <Link to='/homepage' className='fixed bottom-0 items-center gap-3.5 font-medium p-3 hover:bg-slate-100 rounded-sm cursor-pointer'>
+                <AiOutlineRollback size={26} className='cursor-pointer'/>
+            </Link>   
         </div>
     )
 }

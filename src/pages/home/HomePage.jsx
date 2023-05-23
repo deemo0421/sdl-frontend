@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import TopBar from '../../components/TopBar';
-import SideBar from '../../components/Sidebar';
+import SideBar from '../../components/SideBar';
 import Modal from '../../components/Modal';
 import toast, { Toaster } from 'react-hot-toast';
 import { GrFormClose } from "react-icons/gr";
