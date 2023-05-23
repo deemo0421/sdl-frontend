@@ -29,7 +29,7 @@ export default function Reflection() {
         }
     );
 
-    const getNodesQuery = useQuery({
+    const teamDailyQuery = useQuery({
         queryKey: ['teamDaily'],
         queryFn: () => getAllTeamDaily({  params: { projectId: projectId } }),
         onSuccess:setTeamDaily,
@@ -69,8 +69,7 @@ export default function Reflection() {
         }));
     }
     const handleAddFileChange = e =>{
-        setAttachFile(e.target.files);
-        
+        setAttachFile(e.target.files); 
     }
     const handleCreatePersonalDaily = e =>{
         e.preventDefault();
@@ -155,8 +154,8 @@ export default function Reflection() {
                 <hr className='w-full h-[5px] my-2 rounded-xl bg-gray-200 border-0 dark:bg-gray-700'/>
                 <div className='  flex flex-wrap justify-start items-center w-full mb-5'>
                     {
-                        getNodesQuery.isLoading ? <p className=' text-base font-bold'>Loading...</p>:
-                        getNodesQuery.isError ? <p className=' text-base font-bold'>{error.message}</p>:
+                        teamDailyQuery.isLoading ? <p className=' text-base font-bold'>Loading...</p>:
+                        teamDailyQuery.isError ? <p className=' text-base font-bold'>{error.message}</p>:
                         teamDaily.map( ( item, index ) => {
                             if(item.type === "discuss"){
                                 return (
@@ -188,8 +187,8 @@ export default function Reflection() {
                 <hr className='w-full h-[5px] my-2 rounded-xl bg-gray-200 border-0 dark:bg-gray-700'/>
                 <div className=' flex flex-wrap justify-start items-center w-full mb-5'>
                     {
-                        getNodesQuery.isLoading ? <p className=' text-base font-bold'>Loading...</p>:
-                        getNodesQuery.isError ? <p className=' text-base font-bold'>{error.message}</p>:
+                        teamDailyQuery.isLoading ? <p className=' text-base font-bold'>Loading...</p>:
+                        teamDailyQuery.isError ? <p className=' text-base font-bold'>{error.message}</p>:
                         teamDaily.map( ( item, index ) => {
                             if(item.type === "experiment"){
                                 return (
