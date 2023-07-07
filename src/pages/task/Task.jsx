@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useMutation } from 'react-query';
 import { submitTask } from '../../api/task';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate , useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function Task() {
@@ -25,7 +25,7 @@ export default function Task() {
             console.log(res);
             sucesssNotify(res.message)
             localStorage.setItem("mainstage","1-2")
-            navigate('/project/1/kanban')
+            navigate(`/project/${projectId}/kanban`)
         },
         onError : (error) =>{
             console.log(error);

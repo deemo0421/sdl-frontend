@@ -4,7 +4,7 @@ import { BsChevronDown, BsPlusCircleDotted } from "react-icons/bs";
 import { getProjectUser } from '../api/users';
 import { getProject } from '../api/project';
 import { useQuery } from 'react-query';
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { GrFormClose } from "react-icons/gr";
 import Modal from './Modal';
 
@@ -13,6 +13,7 @@ export default function TopBar() {
   const [ projectInfo, setProjectInfo ] = useState({});
   const [ referralCodeModalOpen, setReferralCodeModalOpen] = useState(false);
   const { projectId } = useParams();
+  const navigate = useNavigate();
   
   const getProjectUserQuery = useQuery( "getProjectUser", () => getProjectUser(projectId), 
     {
@@ -39,6 +40,11 @@ export default function TopBar() {
       return
     }
   },[projectId])
+
+  const handleLogout = () =>{
+    localStorage.clear();
+    navigate("/");
+  }
 
   return (
     <div className='fixed  h-16 w-full pl-20 bg-[#FFFFFF] flex items-center justify-between pr-5 border-b-2'>
@@ -71,8 +77,11 @@ export default function TopBar() {
           </ul>
           
           <IoIosNotificationsOutline size={30}  className='cursor-pointer mx-3'/>
-          <h3 className="font-bold cursor-pointer p-1 mr-2 hover:bg-slate-100 rounded-lg">
+          <h3 className="font-bold cursor-pointer p-1 mr-2 rounded-lg">
             {localStorage.getItem("username")}
+          </h3>
+          <h3 className="font-bold cursor-pointer p-1 mr-2 hover:bg-slate-100 rounded-lg" onClick={handleLogout}>
+            登出
           </h3>
         </div>
         <Modal open={referralCodeModalOpen} onClose={() => setReferralCodeModalOpen(false)} opacity={true} position={"justify-center items-center"}> 
