@@ -4,7 +4,7 @@ import { submitTask } from '../../api/task';
 import { useNavigate , useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
-export default function Task() {
+export default function SubmitTask() {
     const subtage1 = {
         title:"提出研究主題",
         input1:"研究主題",

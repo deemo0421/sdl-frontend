@@ -11,7 +11,7 @@ import RootLayout from "./layouts/RootLayout";
 import ProjectLayout from "./layouts/ProjectLayout";
 import Bulletin from "./pages/bulletin/Bulletin";
 import List from "./pages/list/List";
-import Task from "./pages/task/Task";
+import SubmitTask from './pages/submit/submitTask';
 import ManagePhase from "./pages/managePhase/ManagePhase";
 import Reflection from "./pages/reflection/Reflection";
 import Protfolio from './pages/protfolio/Protfolio';
@@ -34,7 +34,7 @@ export default function App() {
           <Route path="List" element={<List />} />
           <Route path="project/:projectId" element={<ProjectLayout />}>
             <Route path="kanban" element={<Kanban />} />
-            <Route path="task" element={<Task />} />
+            <Route path="submitTask" element={<SubmitTask />} />
             <Route path="managePhase" element={<ManagePhase />} />
             <Route path="reflection" element={<Reflection />} />
             <Route path="protfolio" element={<Protfolio />} />
