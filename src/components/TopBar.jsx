@@ -26,7 +26,8 @@ export default function TopBar() {
     {
       onSuccess: (data)=>{
         setProjectInfo(data);
-        localStorage.setItem('mainstage', data.mainStage)
+        localStorage.setItem('currentStage', data.currentStage)
+        localStorage.setItem('currentSubStage', data.currentSubStage)
       },
       enabled:false
     }

@@ -11,7 +11,7 @@ import RootLayout from "./layouts/RootLayout";
 import ProjectLayout from "./layouts/ProjectLayout";
 import Bulletin from "./pages/bulletin/Bulletin";
 import List from "./pages/list/List";
-import SubmitTask from './pages/submit/submitTask';
+import SubmitTask from "./pages/submit/SubmitTask";
 import ManagePhase from "./pages/managePhase/ManagePhase";
 import Reflection from "./pages/reflection/Reflection";
 import Protfolio from './pages/protfolio/Protfolio';

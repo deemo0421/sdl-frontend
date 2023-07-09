@@ -17,7 +17,7 @@ export default function SideBar() {
         { name: "想法牆", link: `/project/${projectId}/ideaWall`, icon: IoBulbOutline },
         { name: "管理階段", link: `/project/${projectId}/managePhase`, icon: BsBezier2 },
         { name: "聊天室", icon: BsChatText},
-        { name: "繳交任務", link: `/project/${projectId}/task`, icon: GrCompliance },
+        { name: "繳交任務", link: `/project/${projectId}/submitTask`, icon: GrCompliance },
         { name: "撰寫日誌", link: `/project/${projectId}/reflection`, icon: BsJournalText },
     ]
 

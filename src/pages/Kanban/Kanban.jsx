@@ -10,7 +10,8 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { StrictModeDroppable as Droppable } from '../../utils/StrictModeDroppable';
 
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { getKanbanColumns, getKanbanTasks, addCardItem, getStageInfo } from '../../api/kanban';
+import { getKanbanColumns, getKanbanTasks, addCardItem } from '../../api/kanban';
+import { getSubStage } from '../../api/stage';
 import { socket } from '../../utils/Socket';
 
 export default function Kanban() {
@@ -19,7 +20,7 @@ export default function Kanban() {
   const [showForm, setShowForm] = useState(false);
   const [selectedcolumn, setSelectedcolumn] = useState(0);
   const {projectId} = useParams();
-  const [stageInfo ,setStageInfo] = useState({title:"",content:""});
+  const [stageInfo ,setStageInfo] = useState({name:"",description:""});
   const queryClient = useQueryClient();
   
 
@@ -36,9 +37,20 @@ export default function Kanban() {
     }
   );
 
-  const getStageInfoQuery = useQuery( "getStageInfo", () => getStageInfo(localStorage.getItem("mainstage")), 
+  const getSubStageQuery = useQuery( "getSubStage", () => getSubStage({
+    projectId:projectId,
+    currentStage:localStorage.getItem("currentStage"),
+    currentSubStage:localStorage.getItem("currentSubStage")
+  }), 
     {
-      onSuccess: setStageInfo,
+      onSuccess: (data)=>{
+        setStageInfo(prev => ({
+          ...prev,
+          ...data,
+          currentStage:localStorage.getItem("currentStage"),
+          currentSubStage:localStorage.getItem("currentSubStage")
+        }));
+      },
       enabled:!!projectId
     }
   );
@@ -207,7 +219,7 @@ export default function Kanban() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
     <div className='grid grid-cols-4 gap-5 my-5 px-20 pt-16 min-w-[1200px] h-screen'>
-      <TaskHint stageInfo={stageInfo}/>
+      <TaskHint stageInfo={stageInfo} />
     {
       kanbanIsLoading  ? <Loader /> :  
       kanbansIsError ? <p className=' font-bold text-2xl'>{kanbansIsError.message}</p> : 
