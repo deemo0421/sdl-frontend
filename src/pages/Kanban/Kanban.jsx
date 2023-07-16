@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { FiPlus } from "react-icons/fi";
 import { v4 as uuidv4 } from 'uuid';
 import Carditem from './components/Carditem';
@@ -22,7 +22,7 @@ export default function Kanban() {
   const {projectId} = useParams();
   const [stageInfo ,setStageInfo] = useState({name:"",description:""});
   const queryClient = useQueryClient();
-  
+  const navigate = useNavigate();
 
   const {
     isLoading : kanbanIsLoading,
@@ -51,7 +51,7 @@ export default function Kanban() {
           currentSubStage:localStorage.getItem("currentSubStage")
         }));
       },
-      enabled:!!projectId
+      enabled:!!localStorage.getItem("currentStage")
     }
   );
   
@@ -161,23 +161,11 @@ export default function Kanban() {
     };
 	}, [socket]);
 
-  // const addKanbanMutation = useMutation(addCardItem,{
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries('kanbanDatas')
-  //   }
-  // })
-
-  // const updateKanbanMutation = useMutation(updateCardItem,{
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries('kanbanDatas')
-  //   }
-  // })
-
-  // const deleteKanbanMutation = useMutation(deleteCardItem,{
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries('kanbanDatas')
-  //   }
-  // })
+  useEffect(()=>{
+    if(!localStorage.getItem("currentStage")||!localStorage.getItem("currentSubStage")){
+      navigate(0);
+    }
+  },[localStorage.getItem("currentStage"),localStorage.getItem("currentSubStage")])
 
   const onDragEnd = ({ destination, source }) => {
     if (!destination) return;

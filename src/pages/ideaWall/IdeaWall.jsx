@@ -31,7 +31,7 @@ export default function IdeaWall() {
 
     const ideaWallInfoQuery = useQuery( 
         'ideaWallInfo', 
-        () => getIdeaWall(projectId, localStorage.getItem("mainstage")),
+        () => getIdeaWall(projectId, `${currentStage}-${currentSubStage}`),
         {
             onSuccess:(data)=>{
                 

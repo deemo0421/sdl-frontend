@@ -29,18 +29,14 @@ export default function TopBar() {
         localStorage.setItem('currentStage', data.currentStage)
         localStorage.setItem('currentSubStage', data.currentSubStage)
       },
-      enabled:false
+      enabled:!!projectId
     }
   );
 
-  useEffect(()=>{
-    if(projectId){
-      getProjectUserQuery.refetch();
-      getProjectQuery.refetch();
-    }else{
-      return
-    }
-  },[projectId])
+  const cleanStage = () =>{
+    localStorage.removeItem('currentStage')
+    localStorage.removeItem('currentSubStage')
+  }
 
   const handleLogout = () =>{
     localStorage.clear();
@@ -49,7 +45,7 @@ export default function TopBar() {
 
   return (
     <div className='fixed  h-16 w-full pl-20 bg-[#FFFFFF] flex items-center justify-between pr-5 border-b-2'>
-        <Link to="/homepage" className="flex px-5 items-center font-bold font-Mulish text-2xl">
+        <Link to="/homepage" onClick={cleanStage} className="flex px-5 items-center font-bold font-Mulish text-2xl">
           sdls
         </Link>
         <div className="flex items-center">

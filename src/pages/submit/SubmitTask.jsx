@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { submitTask } from '../../api/task';
 import { useNavigate , useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
@@ -13,12 +13,14 @@ export default function SubmitTask() {
     const navigate = useNavigate();
     const {projectId} = useParams();
     const [stageInfo ,setStageInfo] = useState({userSubmit:{}});
+    const queryClient = useQueryClient();
 
     const {mutate} = useMutation( submitTask, {
         onSuccess : ( res ) =>{
             console.log(res);
             sucesssNotify(res.message)
-            localStorage.setItem("mainstage","1-2")
+            localStorage.removeItem("currentStage");
+            localStorage.removeItem("currentSubStage");
             navigate(`/project/${projectId}/kanban`)
         },
         onError : (error) =>{
@@ -47,9 +49,10 @@ export default function SubmitTask() {
 
     const handleChange = e =>{
         const { name, value } = e.target;
+        const nameArray = Object.keys(stageInfo.userSubmit);
         setTaskData( prev => ({
         ...prev,
-        [name]:value, 
+        [nameArray[name]]:value, 
         }));
     }
     const handleAddFileChange = e =>{
@@ -60,7 +63,9 @@ export default function SubmitTask() {
         e.preventDefault();
         const formData = new FormData();
         formData.append('projectId',projectId);
-        formData.append('stage',localStorage.getItem('mainstage'));
+        formData.append('currentStage',localStorage.getItem('currentStage'));
+        formData.append('currentSubStage',localStorage.getItem('currentSubStage'));
+        formData.append('content',taskData);
         if(attachFile){
             for (let i = 0; i < attachFile.length; i++){
                 formData.append("attachFile", attachFile[i])
@@ -69,7 +74,6 @@ export default function SubmitTask() {
         for(let key in taskData){
             formData.append(key, taskData[key]);
         }
-        console.log(...formData);
         mutate(formData);
     }
     const errorNotify = (toastContent) => toast.error(toastContent);
@@ -89,18 +93,18 @@ export default function SubmitTask() {
                         const type = element[1];
                         switch (type){
                             case "input":
-                                return <CommonInput key={index} handleChange={handleChange} type={type} name={name}/>
+                                return <CommonInput key={index} handleChange={handleChange} type={type} name={name} index={index}/>
                                 break;
                             case "file":
-                                return <CommonInput key={index} handleChange={handleAddFileChange} type={type} name={name}/>
+                                return <CommonInput key={index} handleChange={handleAddFileChange} type={type} name={name} index={index}/>
                                 break;
                             case "textarea":
-                                return <CommonInput key={index} handleChange={handleChange} type={type} name={name}/>
+                                return <CommonInput key={index} handleChange={handleChange} type={type} name={name} index={index}/>
                                 break;
                         }
                         
                     })}
-                    <div className='flex justify-end m-2'>
+                    <div className='flex justify-end'>
                         <button onClick={ e => {handleSubmit(e)}}   
                         className="mx-auto w-full h-7 my-3 bg-customgreen rounded font-bold text-xs sm:text-sm text-white">
                             上傳

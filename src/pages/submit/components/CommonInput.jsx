@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CommonInput({handleChange, type, name}) {
+export default function CommonInput({handleChange, type, name, index}) {
     return (
         <div>
             <p className=' font-bold text-base mb-3'>
@@ -8,7 +8,7 @@ export default function CommonInput({handleChange, type, name}) {
             </p>
             <input className=" rounded outline-none ring-2 p-1 ring-customgreen w-full mb-3" 
             type={type} 
-            name='title'
+            name={index}
             onChange={handleChange}
             />
         </div>
