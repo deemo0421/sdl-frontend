@@ -265,7 +265,6 @@ export default function Kanban() {
                                     index={index} 
                                     data={item} 
                                     columnIndex={columnIndex} 
-                                    kanbanData={kanbanData}
                                     />
                           })
                       }

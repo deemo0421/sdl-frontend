@@ -4,6 +4,7 @@ import { ChromePicker } from 'react-color'
 export default function ColorPicker() {
     const [currentBgColor, setCurrentBgColor] = useState("#D0021B");
     const [currentTextColor, setCurrentTextColor] = useState("#FFFFFF");
+    const [ content, setContent ] = useState("");
 
     const handleChangeBgColor = (color) =>{
         setCurrentBgColor(color.hex);
@@ -12,7 +13,7 @@ export default function ColorPicker() {
         setCurrentTextColor(color.hex);
     };
     const tagHandleChange = () => {
-
+        setContent()
     };
 
     return (
@@ -21,7 +22,7 @@ export default function ColorPicker() {
             <input className=" rounded outline-none ring-2 p-1 ring-customgreen w-full mb-3" 
                 type="text" 
                 placeholder="標籤內容..."
-                name='title'
+                name='content'
                 onChange={tagHandleChange}
                 />
             <div className='flex justify-center'>

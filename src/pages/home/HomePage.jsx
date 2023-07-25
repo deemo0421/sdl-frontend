@@ -94,7 +94,7 @@ export default function HomePage() {
           </div>
           <div className='flex'>
             <span className=' text-sm mr-3 font-bold cursor-pointer'>已開啟</span>
-            <span className=' text-sm mr-3 font-bold cursor-pointer'>已開啟</span>
+            <span className=' text-sm mr-3 font-bold cursor-pointer'>已關閉</span>
             <span className=' text-sm font-bold cursor-pointer'>日期</span>
             <FaSortDown size={15} className=' cursor-pointer'/>
           </div>

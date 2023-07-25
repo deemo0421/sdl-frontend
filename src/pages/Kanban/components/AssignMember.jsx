@@ -1,24 +1,31 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
-export default function AssignMember({menberData}) {
-    const [menberDatas, setMenberDatas] = useState([]);
-    useEffect(() => {
-        setMenberDatas(menberData)
-    },[])
+export default function AssignMember({menberData, setMenberData, setCardData }) {
 
     const handleChangeCheckBox = (e) => {
         const {name, checked} = e.target;
         if(name ==="allSelect"){
-            let tempMenber = menberDatas.map((menber) =>{
+            let tempMenber = menberData.map((menber) =>{
                 return {...menber, isChecked: checked};
             });
-            setMenberDatas(tempMenber);
+            setMenberData(tempMenber);
+            const filterIsChecked = tempMenber.filter( item => item.isChecked === true)
+            setCardData(prev=>({
+                ...prev,
+                assignees:filterIsChecked
+            }))  
         } else{
-            let tempMenber = menberDatas.map((menber) =>
-                menber.name === name ? {...menber, isChecked: checked} : menber
+            let tempMenber = menberData.map((menber) =>
+                menber.username === name ? {...menber, isChecked: checked} : menber
             )
-            setMenberDatas(tempMenber);
-        }  
+            setMenberData(tempMenber);
+            const filterIsChecked = tempMenber.filter( item => item.isChecked === true)
+            setCardData(prev=>({
+                ...prev,
+                assignees:filterIsChecked
+            }))  
+        }
+        
     };
 
     return (
@@ -34,14 +41,14 @@ export default function AssignMember({menberData}) {
             </div>
             <h4 className='font-bold mt-2 mb-2'>專案成員</h4>
             {
-                menberDatas.map((member, index) => {
+                menberData.map((member, index) => {
                     return(
                         <div key={index} className='flex flex-row  justify-between bg-customgray w-full p-2 mb-2'>
-                            <div className=' text-base'>{member.name}</div>
+                            <div className=' text-base'>{member.username}</div>
                             <input 
                                 type="checkbox" 
                                 className="w-4 h-4 m-1 bg-gray-100 border-gray-300 rounded checked:bg-blue-500" 
-                                name={member.name}
+                                name={member.username}
                                 checked={member?.isChecked || false}
                                 onChange={handleChangeCheckBox}
                                 />

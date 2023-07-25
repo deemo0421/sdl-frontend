@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '../../../components/Modal';
-import ColorPicker from '../../../components/ColorPicker';
+import ColorPicker from './ColorPicker';
 import AssignMember from './AssignMember';
+import { getProjectUser } from '../../../api/users';
+import { useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 import { GrFormClose } from "react-icons/gr";
 import { FiEdit } from "react-icons/fi";
@@ -11,10 +14,11 @@ import { Draggable } from 'react-beautiful-dnd';
 import { socket } from '../../../utils/Socket';
 
 
-export default function Carditem({ data, index, columnIndex, kanbanData }) {
+export default function Carditem({ data, index, columnIndex }) {
   const [ open, setOpen ] = useState(false)
   const [ tagModalopen, setTagModalOpen ] = useState(false)
   const [ assignMemberModalopen, setAssignMemberModalOpen ] = useState(false)
+  const {projectId} = useParams();
   const [ cardData, setCardData ] = useState({
     "id":"",
     "title": "",
@@ -22,7 +26,15 @@ export default function Carditem({ data, index, columnIndex, kanbanData }) {
     "labels":[],
     "assignees": []
   })
-  const menberData = [ {name:'成員1'}, {name:'成員2'}, {name:'成員3'}];
+  const [ menberData, setMenberData ] = useState([]);
+  const [ labelData, setLabelData ] = useState([]);
+
+  const getProjectUserQuery = useQuery( "getProjectUser", () => getProjectUser(projectId), 
+    {
+      onSuccess: setMenberData,
+      enabled:!!projectId
+    }
+  );
 
   useEffect(()=>{
     setCardData(data);
@@ -53,7 +65,7 @@ export default function Carditem({ data, index, columnIndex, kanbanData }) {
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
-        className={`${snapshot.isDragging ? 'border-2 border-black/50 bg-cyan-100' : 'border-0 bg-white'}  rounded-md p-3 mt-3 truncate min-h-[80px] max-w-full`}
+        className={`${snapshot.isDragging ? 'border-2 border-black/50 bg-sky-300' : 'border-0 bg-white'}  rounded-md p-3 mt-3 truncate min-h-[80px] max-w-full`}
       >
         <div className='flex justify-between'>
           <span className='flex text-lg'>{data.title}</span>
@@ -81,8 +93,8 @@ export default function Carditem({ data, index, columnIndex, kanbanData }) {
               data.assignees &&
               data?.assignees.map((assignee, index) => {
                 return(
-                  <div key={index} className={`w-8 h-8 bg-slate-100 rounded-full flex items-center text-center p-2 shadow-xl text-xs overflow-hidden cursor-default`}>
-                    {assignee.userId}
+                  <div key={index} className={`w-8 h-8 bg-slate-100 border-[1px] border-slate-400 rounded-full flex items-center text-center p-2 shadow-xl text-xs overflow-hidden cursor-default`}>
+                    {assignee.username}
                   </div>
                 )
               })
@@ -147,8 +159,8 @@ export default function Carditem({ data, index, columnIndex, kanbanData }) {
               cardData.assignees &&
               cardData.assignees.map((assignee, index) => {
                 return(
-                  <div key={index} className={`w-8 h-8 ${assignee.bgcolor} rounded-full flex items-center text-center p-2 shadow-xl text-xs overflow-hidden cursor-default`}>
-                    {assignee.userId}
+                  <div key={index} className={`w-8 h-8 border-[1px] border-slate-400 bg-slate-100 rounded-full flex items-center text-center p-2 shadow-xl text-xs overflow-hidden cursor-default`}>
+                    {assignee.username}
                   </div>
                 )
               })
@@ -187,7 +199,7 @@ export default function Carditem({ data, index, columnIndex, kanbanData }) {
           <button onClick={() => setAssignMemberModalOpen(false)} className=' absolute top-1 right-1 rounded-lg bg-white hover:bg-slate-200'>
             <GrFormClose  className=' w-6 h-6'/>
           </button> 
-          <AssignMember menberData={menberData}/>
+          <AssignMember menberData={menberData} setMenberData={setMenberData} setCardData={setCardData} cardHandleSubmit={cardHandleSubmit}/>
       </Modal>
     }
     </>

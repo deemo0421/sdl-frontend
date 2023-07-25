@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { submitTask } from '../../api/task';
+import { useMutation, useQuery } from 'react-query';
+import { submitTask } from '../../api/submit';
 import { useNavigate , useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { getSubStage } from '../../api/stage';
@@ -12,12 +12,14 @@ export default function SubmitTask() {
     const [ attachFile, setAttachFile ] = useState(null);
     const navigate = useNavigate();
     const {projectId} = useParams();
-    const [stageInfo ,setStageInfo] = useState({userSubmit:{}});
-    const queryClient = useQueryClient();
+    const [ stageInfo ,setStageInfo ] = useState({userSubmit:{}});
 
     const {mutate} = useMutation( submitTask, {
         onSuccess : ( res ) =>{
-            console.log(res);
+            if(res.message === "done"){
+                sucesssNotify("全部階段已完成")
+                localStorage.setItem('stageEnd', "true")
+            }
             sucesssNotify(res.message)
             localStorage.removeItem("currentStage");
             localStorage.removeItem("currentSubStage");
@@ -65,7 +67,7 @@ export default function SubmitTask() {
         formData.append('projectId',projectId);
         formData.append('currentStage',localStorage.getItem('currentStage'));
         formData.append('currentSubStage',localStorage.getItem('currentSubStage'));
-        formData.append('content',taskData);
+        formData.append('content',JSON.stringify(taskData));
         if(attachFile){
             for (let i = 0; i < attachFile.length; i++){
                 formData.append("attachFile", attachFile[i])
@@ -80,12 +82,16 @@ export default function SubmitTask() {
     const sucesssNotify = (toastContent) => toast.success(toastContent);
 
     return (
-        
+        localStorage.getItem('stageEnd') ? 
+        <div className='flex my-5 pl-20 pr-5 sm:px-20 py-16 w-full h-screen justify-center items-center'>
+            <div className=' text-customgreen text-xl font-bold'>階段皆已完成</div>
+        </div>
+        :
         <div className='flex flex-col my-5 pl-20 pr-5 sm:px-20 py-16 w-full h-screen justify-center items-center'>
             {
                 getSubStageQuery.isLoading ? <Loader/> :
                 <div className='flex flex-col w-1/3 p-3 bg-white border-2 border-gray-200 rounded-lg'>
-                <h3 className=' font-bold text-xl text-center mb-3'>
+                    <h3 className=' font-bold text-xl text-center mb-3'>
                     {stageInfo.name}
                     </h3>
                     {Object.entries(stageInfo.userSubmit).map((element, index) =>{

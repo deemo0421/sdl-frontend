@@ -18,7 +18,7 @@ export default function TopBar() {
   const getProjectUserQuery = useQuery( "getProjectUser", () => getProjectUser(projectId), 
     {
       onSuccess: setProjectUsers,
-      enabled:false
+      enabled:!!projectId
     }
   );
 
@@ -36,6 +36,7 @@ export default function TopBar() {
   const cleanStage = () =>{
     localStorage.removeItem('currentStage')
     localStorage.removeItem('currentSubStage')
+    localStorage.removeItem('stageEnd')
   }
 
   const handleLogout = () =>{
