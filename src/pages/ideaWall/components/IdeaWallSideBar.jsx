@@ -2,10 +2,11 @@ import React, {useState} from 'react'
 import {FaBars} from 'react-icons/fa'
 import { AiOutlineImport, AiFillEye, AiOutlineRollback } from "react-icons/ai"
 import { GrStackOverflow } from "react-icons/gr"
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 export default function IdeaWallSideBar() {
     const [open, setOpen] = useState(false);
+    const { projectId } = useParams();
     const menus = [
         { name: "引入想法牆", icon: AiOutlineImport, margin:"true"},
         { name: "佈局", icon: GrStackOverflow },
@@ -31,7 +32,7 @@ export default function IdeaWallSideBar() {
                     ))
                 }
             </div> 
-            <Link to='/homepage' className='fixed bottom-0 items-center gap-3.5 font-medium p-3 hover:bg-slate-100 rounded-sm cursor-pointer'>
+            <Link to={`/project/${projectId}/kanban`} className='fixed bottom-0 items-center gap-3.5 font-medium p-3 hover:bg-slate-100 rounded-sm cursor-pointer'>
                 <AiOutlineRollback size={26} className='cursor-pointer'/>
             </Link>   
         </div>

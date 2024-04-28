@@ -45,7 +45,7 @@ export default function TopBar() {
   }
 
   return (
-    <div className='fixed  h-16 w-full pl-20 bg-[#FFFFFF] flex items-center justify-between pr-5 border-b-2'>
+    <div className={`fixed h-16 w-full bg-[#FFFFFF] flex items-center justify-between pr-5 border-b-2 ${projectId ? "pl-20" : "pl-5"}`}>
         <Link to="/homepage" onClick={cleanStage} className="flex px-5 items-center font-bold font-Mulish text-2xl">
           sdls
         </Link>
