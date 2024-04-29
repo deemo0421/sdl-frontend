@@ -26,38 +26,40 @@ export default function IdeaWall() {
     const [ ideaWallInfo, setIdealWallInfo] = useState({id:"1",name:"",type:""})
     const [ selectNodeInfo, setSelectNodeInfo] = useState({id:"",title:"",content:"",owner:"", ideaWallId:""});
     const [ buildOnNodeId, setBuildOnId ] = useState("")
-    const [ tempid, setTempId] = useState("")
-
+    const [ ideaWallId, setIdeaWallId] = useState("")
 
     const ideaWallInfoQuery = useQuery( 
         'ideaWallInfo', 
-        () => getIdeaWall(projectId, `${currentStage}-${currentSubStage}`),
+        () => getIdeaWall(
+                projectId, 
+                localStorage.getItem(currentStage), 
+                localStorage.getItem(currentSubStage)),
         {
             onSuccess:(data)=>{
                 
                 setIdealWallInfo(data)
                 if(data){
                     const {id} = data
-                    setTempId(id)
+                    setIdeaWallId(id)
                 }
             },
         }
     )
     const getNodesQuery = useQuery({
-        queryKey: ['ideaWallDatas', tempid],
-        queryFn: () => getNodes(tempid),
+        queryKey: ['ideaWallDatas', ideaWallId],
+        queryFn: () => getNodes(ideaWallId),
         // The query will not execute until the userId exists
         onSuccess:setnodes,
-        enabled: !!tempid,
+        enabled: !!ideaWallId,
         retryOnMount:false
     });
 
     const getNodeRelationQuery = useQuery({
-        queryKey: ['ideaWallEdgesDatas', tempid],
-        queryFn: () => getNodeRelation(tempid),
+        queryKey: ['ideaWallEdgesDatas', ideaWallId],
+        queryFn: () => getNodeRelation(ideaWallId),
         // The query will not execute until the userId exists
         onSuccess:setEdges,
-        enabled: !!tempid,
+        enabled: !!ideaWallId,
         retryOnMount:false
     });
 
