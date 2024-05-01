@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Modal from '../../components/Modal';
 import IdeaWallSideBar from './components/IdeaWallSideBar';
 import TopBar from '../../components/TopBar';
@@ -23,20 +23,23 @@ export default function IdeaWall() {
     const [ createNodeModalOpen, setCreateNodeModalOpen ] = useState(false);
     const [ updateNodeModalOpen, setUpdateNodeModalOpen ] = useState(false);
     const [ canvasPosition, setCanvasPosition ] = useState({});
-    const [ ideaWallInfo, setIdealWallInfo] = useState({id:"1",name:"",type:""})
+    const [ ideaWallInfo, setIdealWallInfo] = useState({id:"2",name:"",type:""})
     const [ selectNodeInfo, setSelectNodeInfo] = useState({id:"",title:"",content:"",owner:"", ideaWallId:""});
     const [ buildOnNodeId, setBuildOnId ] = useState("")
     const [ ideaWallId, setIdeaWallId] = useState("")
-
+    
     const ideaWallInfoQuery = useQuery( 
         'ideaWallInfo', 
-        () => getIdeaWall(
-                projectId, 
-                localStorage.getItem(currentStage), 
-                localStorage.getItem(currentSubStage)),
+        () => getIdeaWall({
+            params:{
+                projectId:projectId, 
+                stage:localStorage.getItem("currentStage"), 
+                subStage:localStorage.getItem("currentSubStage")
+            }
+        }),
         {
             onSuccess:(data)=>{
-                
+                console.log(data);
                 setIdealWallInfo(data)
                 if(data){
                     const {id} = data
@@ -95,11 +98,13 @@ export default function IdeaWall() {
                 new Network(container.current, {nodes, edges}, option);
 
         network?.on("click", () => {
+            console.log(network.getSeed());
             setCreateOptionModalOpen(false);
             setBuildOnOptionModalOpen(false);
         })
 
         network?.on("doubleClick", () =>{
+            // to do 
         })
 
         network?.on("oncontext", (properties)=>{
