@@ -28,7 +28,7 @@ export const visNetworkOptions = {
     interaction:{
         hover:true,
     },
-    // layout:{
-    //     randomSeed:
-    // }
+    layout:{
+        randomSeed:"0.28798849012006045:1714572317738"
+    }
 };
